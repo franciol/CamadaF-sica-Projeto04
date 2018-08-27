@@ -96,8 +96,8 @@ def main():
     # log
     print ("Lido              {} bytes ".format(nRx))
 
-    print (rxBuffer)
-    print(len(rxBuffer))
+    print ('rxBuffer 'rxBuffer)
+    print('len(rxBuffer)'len(rxBuffer))
 
 
     # Encerra comunicacao

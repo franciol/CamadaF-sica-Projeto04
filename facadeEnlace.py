@@ -1,9 +1,6 @@
 from PIL import Image,ImageDraw
 import io,os
 
-
-
-
 EOP = b'/00/00/00/00'
 stuffingByte = b'/7a/'
 
@@ -32,7 +29,7 @@ def encapsulate(payload, messageType):
 
 
     txLen = len(payload)
-    print(txLen)
+    print('txLen: 'txLen)
     '''
         Head = 10 bytes:
             payloadLen = 5 bytes
@@ -68,11 +65,13 @@ def encapsulate(payload, messageType):
 
     elif messageType == 5:
         head = bytes([5])+bytes(payloadLen)+EOP+stuffingByte
-        #acknowledge do servidor para cliente confirmando recebimento correto do payload
+        #acknowledge do servidor para cliente confirmando recebimento 
+        #correto do payload
 
     elif messageType == 6:
         head = bytes([6])+bytes(payloadLen)+EOP+stuffingByte
-        #nacknowledge do servidor para cliente pedindo reenvio do pacote por erro de transmissão
+        #nacknowledge do servidor para cliente pedindo reenvio do pacote por 
+        #erro de transmissão
 
     elif messageType == 7:
         head = bytes([7])+bytes(payloadLen)+EOP+stuffingByte
@@ -92,7 +91,7 @@ def encapsulate(payload, messageType):
 
     else:
         head = None 
-        #messageType fora do protocolo
+        #messageType fora do protocolo e portanto byte não deve ser formado com HEAD
 
 
     all = bytes()
@@ -102,6 +101,8 @@ def encapsulate(payload, messageType):
     print("\n Head len:  ",len(head))
 
     return all
+
+
 
 def readHeadNAll(receivedAll):
 
@@ -116,14 +117,12 @@ def readHeadNAll(receivedAll):
     sanityCheck = bytearray()
     stuffByteCount = 0
 
-
-
     for i in range(21, len(receivedAll)):
         if receivedAll[i:i+1] == stuffByte:
             sanityCheck += receivedAll[i+1:i+14]
             i +=14
         elif eopSystem == receivedAll[i:i+13]:
-            print(receivedAll[i:i+13])
+            print('EOP: 'receivedAll[i:i+13])
             break
 
         else:
@@ -136,9 +135,14 @@ def readHeadNAll(receivedAll):
         print ("sanityCheck = okay")
         return sanityCheck, txLen
 
-    else:
-        print ("\n\n ERRO  \n\n HOUVE FALHA NA TRANSMISSÃO. FECHANDO APLICAÇÃO… TENTE NOVAMENTE.")
-        quit()
+    '''
+    ATENÇÃO: TROCAR ELSE POR TRATAMENTO DE ERROS VIA PROTOCOLO MESSAGETYPE
+
+    '''
+
+    # else:
+    #     print ("\n\n ERRO  \n\n HOUVE FALHA NA TRANSMISSÃO. FECHANDO APLICAÇÃO… TENTE NOVAMENTE.")
+    #     quit()
 
 
 
@@ -149,7 +153,7 @@ def teste():
     img.save(imgByteArr, format='JPEG')
     imgByteArr = imgByteArr.getvalue()
     testeSubject = encapsulate(imgByteArr)
-    print(testeSubject)
+    print('testeSubject 'testeSubject)
     txLenRead, txLenRead2 = readHeadNAll(testeSubject)
 
     print("\n Reading TxLen:     ",txLenRead )
