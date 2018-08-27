@@ -50,53 +50,49 @@ def encapsulate(payload, messageType):
     payloadLen = int_to_byte(txLen,5)
     
     if messageType == 1:
-        head = bytes(1)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([1])+bytes(payloadLen)+EOP+stuffingByte
         #Cliente manda pedido de comunicação para servidor
     
     elif messageType == 2:
-        head = bytes(2)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([2])+bytes(payloadLen)+EOP+stuffingByte
         #Servidor responde cliente dizendo que recebeu mensagem tipo 1
 
     elif messageType == 3:
-        head = bytes(3)+bytes(payloadLen)+EOP+stuffingByte    
+        head = bytes([3])+bytes(payloadLen)+EOP+stuffingByte    
         #Cliente responde servidor dizendo que recebeu mensagem tipo 2
         #e servidor sabe que a próxima mensagem é tipo 4
 
     elif messageType == 4:
-        head = bytes(4)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([4])+bytes(payloadLen)+EOP+stuffingByte
         #Cliente faz efetivamente transmissão para servidor
 
     elif messageType == 5:
-        head = bytes(5)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([5])+bytes(payloadLen)+EOP+stuffingByte
         #acknowledge do servidor para cliente confirmando recebimento correto do payload
 
     elif messageType == 6:
-        head = bytes(6)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([6])+bytes(payloadLen)+EOP+stuffingByte
         #nacknowledge do servidor para cliente pedindo reenvio do pacote por erro de transmissão
 
     elif messageType == 7:
-        head = bytes(7)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([7])+bytes(payloadLen)+EOP+stuffingByte
         #Pedido de encerramento da mensagem
 
     elif messageType == 8:
-        head = bytes(8)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([8])+bytes(payloadLen)+EOP+stuffingByte
         #Erro tipo 1: cliente não recebeu mensagem tipo 2
 
     elif messageType == 9:
-        head = bytes(9)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([9])+bytes(payloadLen)+EOP+stuffingByte
         #Erro tipo 2: servidor não recebeu mensagem tipo 3
 
     elif messageType == 0:
-        head = bytes(0)+bytes(payloadLen)+EOP+stuffingByte
+        head = bytes([0])+bytes(payloadLen)+EOP+stuffingByte
         #Erro tipo 3: não recebeu ack ou nack em 5 segundos
 
     else:
         head = None 
         #messageType fora do protocolo
-
-    
-
-
 
 
     all = bytes()
