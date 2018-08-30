@@ -27,9 +27,12 @@ def fromByteToInt(bytes):
 def encapsulate(payload, messageType):
 
 
+    if payload != None:
+        txLen = len(payload)
+    else:
+        txLen = len(int_to_byte(0,1))
 
-    txLen = len(payload)
-    print('txLen: 'txLen)
+    print('txLen: ',txLen)
     '''
         Head = 10 bytes:
             payloadLen = 5 bytes
@@ -37,25 +40,28 @@ def encapsulate(payload, messageType):
             stuffing = 3 bytes
     '''
     payloadfinal = bytes()
-    for i in range(0, len(payload)):
-        if EOP == payload[i:i+13]:
-            payloadfinal+=stuffingByte
-            payloadfinal+=payload[i:i+1]
-        else:
-            payloadfinal+=payload[i:i+1]
+    if payload != None:
+        for i in range(0, len(payload)):
+            if EOP == payload[i:i+13]:
+                payloadfinal+=stuffingByte
+                payloadfinal+=payload[i:i+1]
+            else:
+                payloadfinal+=payload[i:i+1]
+    else:
+        payloadfinal = int_to_byte(0,1)
 
     payloadLen = int_to_byte(txLen,5)
-    
+
     if messageType == 1:
         head = int_to_byte(1,1)+payloadLen+EOP+stuffingByte
         #Cliente manda pedido de comunicação para servidor
-    
+
     elif messageType == 2:
         head = int_to_byte(2,1)+payloadLen+EOP+stuffingByte
         #Servidor responde cliente dizendo que recebeu mensagem tipo 1
 
     elif messageType == 3:
-        head = int_to_byte(3,1)+payloadLen+EOP+stuffingByte    
+        head = int_to_byte(3,1)+payloadLen+EOP+stuffingByte
         #Cliente responde servidor dizendo que recebeu mensagem tipo 2
         #e servidor sabe que a próxima mensagem é tipo 4
 
@@ -65,12 +71,12 @@ def encapsulate(payload, messageType):
 
     elif messageType == 5:
         head = int_to_byte(5,1)+payloadLen+EOP+stuffingByte
-        #acknowledge do servidor para cliente confirmando recebimento 
+        #acknowledge do servidor para cliente confirmando recebimento
         #correto do payload
 
     elif messageType == 6:
         head = int_to_byte(6,1)+payloadLen+EOP+stuffingByte
-        #nacknowledge do servidor para cliente pedindo reenvio do pacote por 
+        #nacknowledge do servidor para cliente pedindo reenvio do pacote por
         #erro de transmissão
 
     elif messageType == 7:
@@ -90,13 +96,13 @@ def encapsulate(payload, messageType):
         #Erro tipo 3: não recebeu ack ou nack em 5 segundos
 
     else:
-        head = None 
+        head = None
         #messageType fora do protocolo e portanto byte não deve ser formado com HEAD
 
 
     all = bytes()
     all += head
-    all += payload
+    all += payloadfinal
     all += EOP
     print("\n Head len:  ",len(head))
 
@@ -126,11 +132,13 @@ def readHeadNAll(receivedAll):
             sanityCheck += receivedAll[i+1:i+14]
             i +=14
         elif eopSystem == receivedAll[i:i+13]:
-            print('EOP: 'receivedAll[i:i+13])
+            print('EOP: ',receivedAll[i:i+13])
             break
 
         else:
             sanityCheck += receivedAll[i:i+1]
+            print("\n yep")
+            print(sanityCheck)
 
 
     print('SanityCheck ', sanityCheck)
@@ -142,6 +150,7 @@ def readHeadNAll(receivedAll):
 
     else:
         messageType = 6
+        print("Ue")
         return None, None, messageType
     '''
     ATENÇÃO: TROCAR ELSE POR TRATAMENTO DE ERROS VIA PROTOCOLO MESSAGETYPE
@@ -160,9 +169,8 @@ def teste():
     imgByteArr = io.BytesIO()
     img.save(imgByteArr, format='JPEG')
     imgByteArr = imgByteArr.getvalue()
-    testeSubject = encapsulate(imgByteArr)
-    print('testeSubject 'testeSubject)
-    txLenRead, txLenRead2 = readHeadNAll(testeSubject)
+    testeSubject = encapsulate(None,5)
+    receaved, txLenRead, msgTupe = readHeadNAll(testeSubject)
 
-    print("\n Reading TxLen:     ",txLenRead )
-    print("\n Reading Txlen: ", txLenRead2)
+    print("Mensagem do tipo: ",msgTupe)
+    print("\nFoi enviado um byte no payload igual a: ",int_to_byte(0,1)," e foi recebido um byte igual a: ",receaved)
