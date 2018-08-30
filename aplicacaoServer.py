@@ -16,6 +16,95 @@ def fromByteToInt(bytes):
 
     return result
 
+def sistemaRecebimento(com):
+    com.enable()
+    print("porta COM aberta com sucesso")
+
+
+    #Variaveis
+    ouvindoMensagem1 = True
+    ouvindoMensagem3 = True
+    ouvindoMensagem4 = True
+    ouvindoMensagem56 = True
+    ouvindoMensagem7 = True
+    ouvindoMensagem9 = True
+
+
+
+    while ouvindoMensagem1:
+        print("OUVINDO MENSAGEM 1")
+        bytesSeremLidos = com.rx.getBufferLen()
+
+        payload, lenPayload, messageType = com.getData(bytesSeremLidos)
+        print("messageType ", messageType)
+        if messageType == 1:
+            print("RECEBEU MENSAGEM 1")
+            ouvindoMensagem1 = False
+            break
+        
+        else:
+            continue
+
+
+    while ouvindoMensagem3:
+        print("OUVINDO MENSAGEM 3")
+        com.sendData(None,2)
+        print("MANDOU MENSAGEM 2")
+        SentMessage2 = time.time()
+
+        while time.time() < SentMessage2 + 5 or bytesSeremLidos != None:
+            bytesSeremLidos = com.rx.getBufferLen()
+            payload, lenPayload, messageType = com.getData(bytesSeremLidos)
+
+            if messageType == 3:
+                print("RECEBEU MENSAGEM 3")
+                ouvindoMensagem3 = False
+                break
+            
+            else:
+                continue
+
+    bytesSeremLidos = com.rx.getBufferLen()
+    payload, lenPayload, messageType = com.getData(bytesSeremLidos);
+
+
+    print("-------------------------")
+    print("Comunicacao encerrada")
+    print("-------------------------")
+    com.disable()
+    rxBuff = io.BytesIO(payload)
+    img = Image.open(rxBuff)
+    draw = ImageDraw.Draw(img)
+    img.show()
+
+
+
+
+
+    '''
+    bytesSeremLidos = None
+    while time.time() < SentMessage1 + 5 or bytesSeremLidos != None:
+        bytesSeremLidos=com.rx.getBufferLen()
+    if bytesSeremLidos != None:
+        resultData, resultDataLen, messageType = com.getData(bytesSeremLidos)
+        if messageType == 2:
+            ouvindoresposta1 = False
+            print("comunicacao aberta")
+            break
+    print("Resposta do servidor não recebida, reenvio do mensagem de tipo 1")
+
+'''
+    print("Enviando mensagem para confirmar que ouviu")
+    com.sendData(None,3)
+
+    time.sleep(2)
+
+    #print("tentado transmitir .... {} bytes".format(txLen))
+    com.sendData(payload,4)
+
+
+
+
 
 print("comecou")
 
@@ -33,7 +122,7 @@ import io,os
 # se estiver usando windows, o gerenciador de dispositivos informa a porta
 
 #serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
-serialName = "/dev/tty.usbmodem1421" # Mac    (variacao de)
+serialName = "/dev/tty.usbmodem1411" # Mac    (variacao de)
 #serialName = "COM4"                  # Windows(variacao de)
 
 
@@ -48,20 +137,21 @@ def main():
     com = enlace(serialName)
 
     # Ativa comunicacao
-    com.enable()
+    #com.enable()
 
-
+    sistemaRecebimento(com)
     #verificar que a comunicacao foi aberta
     print("comunicacao aberta")
 
-
+    '''
 
 
     # Faz a recepcao dos dados
 
     #A FAZER: listener de pacotes
     #SE RECEBEU 1,
-    com.sendData(None, 2)
+
+     com.sendData(None, 2)
     
 
     SentMessage2 = time.time()
@@ -69,36 +159,24 @@ def main():
     while time.time() < SentMessage2 + 5:
         resultData, resultDataLen, messageType = com.getData();
         if messageType == 3:
+            pass
 
         #A FAZER: receber message3
         #SE RECEBIDO: goto recebendo dados
 
     if time.time() > SentMessage2 + 5:
         com.sendData(None, 9)
-        goto comStart
+    
 
-
-
-    print ("Recebendo dados .... ")
-    bytesSeremLidos=com.rx.getBufferLen()
-    print(bytesSeremLidos)
     #confirmar que se trata de message4
 
 
-    rxBuffer, nRx = com.getData(bytesSeremLidos)
-    print(rxBuffer)
-
-
-    # log
-    print ("Lido              {} bytes ".format(nRx))
-
-    print ('rxBuffer 'rxBuffer)
-    print('len(rxBuffer)'len(rxBuffer))
 
     #A FAZER: LISTENER MENSAGEM
     #SE recebeu Message7, goto ComEnd
-
+    '''
     # Encerra comunicacao
+    '''
     print("-------------------------")
     print("Comunicacao encerrada")
     print("-------------------------")
@@ -109,5 +187,6 @@ def main():
     img.show()
     #img.save('/home/francisco/Documentos/Insper /Semestre4/Camada Física da Computação/Projeto02/SalvarArquivo/ImagemEnviadaFinal.jpg')
     #so roda o main quando for executado do terminal ... se for chamado dentro de outro modulo nao roda
+    '''
 if __name__ == "__main__":
     main()

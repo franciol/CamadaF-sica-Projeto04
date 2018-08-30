@@ -111,6 +111,7 @@ def encapsulate(payload, messageType):
 
 
 def readHeadNAll(receivedAll):
+    print(receivedAll)
 
     head = receivedAll[0:22]
 
@@ -145,11 +146,11 @@ def readHeadNAll(receivedAll):
     if len(sanityCheck) == txLen:
 
         print ("sanityCheck = okay")
-        messageType = 5
+        
         return sanityCheck, txLen, messageType
 
     else:
-        messageType = 6
+        
         print("Ue")
         return None, None, messageType
     '''
