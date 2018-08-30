@@ -44,47 +44,36 @@ print("porta COM aberta com sucesso")
 
 def main():
 
-    #img = Image.open('dragon.jpg', mode='r')
-
-    #imgByteArr = io.BytesIO()
-    #img.save(imgByteArr, format='JPEG')
-    #imgByteArr = imgByteArr.getvalue()
-    # Inicializa enlace ... variavel com possui todos os metodos e propriedades do enlace, que funciona em threading
+    
     com = enlace(serialName)
 
     # Ativa comunicacao
     com.enable()
-    
+
 
     #verificar que a comunicacao foi aberta
     print("comunicacao aberta")
 
 
-    # a seguir ha um exemplo de dados sendo carregado para transmissao
-    # voce pode criar o seu carregando os dados de uma imagem. Tente descobrir
-    '''
-    #como fazer isso
-    print ("gerando dados para transmissao :")
-
-
-
-    txBuffer = imgByteArr
-    txLen2 = 20
-    '''
-
-    '''
-    print(txLen)
-
-    # Transmite dado
-    print("tentado transmitir .... {} bytes".format(txLen))
-    com.sendData(txBuffer)
-
-
-    # Atualiza dados da transmissao
-    txSize = com.tx.getStatus()
-    '''
+    
 
     # Faz a recepcao dos dados
+
+    #A FAZER: listener de pacotes
+    #SE RECEBEU 1,
+    com.sendData(None, 2)
+    SentMessage2 = time.time()
+    
+    while time.time() < SentMessage2 + 5:
+        #A FAZER: receber message3
+        #SE RECEBIDO: goto recebendo dados
+
+    if time.time() > SentMessage2 + 5:
+        com.sendData(None, 9)
+        goto comStart 
+
+        
+
     print ("Recebendo dados .... ")
     bytesSeremLidos=com.rx.getBufferLen()
     print(bytesSeremLidos)

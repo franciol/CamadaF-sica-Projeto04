@@ -106,11 +106,11 @@ def encapsulate(payload, messageType):
 
 def readHeadNAll(receivedAll):
 
-    head = receivedAll[0:21]
+    head = receivedAll[0:22]
 
     txLen = fromByteToInt(head[1:6])
 
-    messageType = fromByteToInt(head[0])
+    messageType = fromByteToInt(head[0:1])
     #Leitura do messaType do pacote recebido
 
 
@@ -137,8 +137,12 @@ def readHeadNAll(receivedAll):
     if len(sanityCheck) == txLen:
 
         print ("sanityCheck = okay")
+        messageType = 5
         return sanityCheck, txLen, messageType
 
+    else:
+        messageType = 6
+        return None, None, messageType
     '''
     ATENÇÃO: TROCAR ELSE POR TRATAMENTO DE ERROS VIA PROTOCOLO MESSAGETYPE
 

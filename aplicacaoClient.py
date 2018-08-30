@@ -59,15 +59,23 @@ def main():
     com = enlace(serialName)
 
     # Ativa comunicacao
+    label: comStart
     com.enable()
     com.sendData(None, 1)
     SentMessage1 = time.time()
 
     while time.time() < SentMessage1 + 5:
         #A FAZER: receber message2
+        #SE RECEBIDO: goto comOpen
+
+    if time.time() > SentMessage1 + 5:
+        com.sendData(None, 8)
+        goto comStart 
+
+
 
     #verificar que a comunicacao foi aberta
-    
+    label: comOpen
     print("comunicacao aberta")
 
 
@@ -82,6 +90,7 @@ def main():
     txBuffer = imgByteArr
     txLen = len(imgByteArr)
 
+    label: comSend
     # Transmite dado
     print("tentado transmitir .... {} bytes".format(txLen))
 
@@ -92,6 +101,13 @@ def main():
     txSize = com.tx.getStatus()
 
 
+
+    #A FAZER: listener de dados recebidos
+    #SE RECEBEU 6, goto comStart
+    #SE RECEBEU 7, goto comEnd
+    #SE RECEBEU 5, goto comEnd
+    
+    label: comEnd
     # Encerra comunicacao
     print("-------------------------")
     print("Comunicacao encerrada")
