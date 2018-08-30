@@ -32,15 +32,19 @@ def sistemaEnvio(payload, com):
     while ouvindoresposta1:
         #Tipo 1: Ver se tem alguem ouvindo
         com.sendData(None,1)
+        print("Mensagem 1 enviada")
         SentMessage1 = time.time()
         bytesSeremLidos = None
-        while time.time() < SentMessage1 + 5 or bytesSeremLidos != None:
+        while time.time() < SentMessage1 + 5:
+            print("Entrou na leitura de Buffer para 2")
             bytesSeremLidos=com.rx.getBufferLen()
         if bytesSeremLidos != None:
+            print("bytesseremlidos: ",bytesSeremLidos)
             resultData, resultDataLen, messageType = com.getData(bytesSeremLidos)
             if messageType == 2:
-                ouvindoresposta1 = False
+                print("mensagem tipo 2 Chegou\n")
                 print("comunicacao aberta")
+                ouvindoresposta1 = False
                 break
         print("Resposta do servidor não recebida, reenvio do mensagem de tipo 1")
 
@@ -48,9 +52,10 @@ def sistemaEnvio(payload, com):
     print("Enviando mensagem para confirmar que ouviu")
     com.sendData(None,3)
 
-    time.sleep(2)
+    time.sleep(10)
 
     #print("tentado transmitir .... {} bytes".format(txLen))
+    print("Enviando Informação")
     com.sendData(payload,4)
 
 
@@ -75,7 +80,7 @@ import tkinter.filedialog as fdlg
 
 #serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
 #serialName = "/dev/cu.usbmodem1421" # Mac    (variacao de)
-serialName = "COM3"                  # Windows(variacao de)
+serialName = "COM4"                  # Windows(variacao de)
 
 
 
