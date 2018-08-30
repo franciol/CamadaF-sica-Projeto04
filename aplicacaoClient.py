@@ -104,9 +104,9 @@ def main():
 
     #A FAZER: listener de dados recebidos
     #SE RECEBEU 6, goto comStart
-    #SE RECEBEU 7, goto comEnd
-    #SE RECEBEU 5, goto comEnd
     
+    #SE RECEBEU 5, goto comEnd
+
     label: comEnd
     # Encerra comunicacao
     print("-------------------------")

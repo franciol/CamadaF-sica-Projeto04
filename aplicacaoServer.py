@@ -72,11 +72,12 @@ def main():
         com.sendData(None, 9)
         goto comStart 
 
-        
+
 
     print ("Recebendo dados .... ")
     bytesSeremLidos=com.rx.getBufferLen()
     print(bytesSeremLidos)
+    #confirmar que se trata de message4
 
 
     rxBuffer, nRx = com.getData(bytesSeremLidos)
@@ -89,6 +90,8 @@ def main():
     print ('rxBuffer 'rxBuffer)
     print('len(rxBuffer)'len(rxBuffer))
 
+    #A FAZER: LISTENER MENSAGEM
+    #SE recebeu Message7, goto ComEnd
 
     # Encerra comunicacao
     print("-------------------------")
