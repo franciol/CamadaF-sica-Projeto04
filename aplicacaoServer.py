@@ -77,6 +77,7 @@ def main():
     print ("Recebendo dados .... ")
     bytesSeremLidos=com.rx.getBufferLen()
     print(bytesSeremLidos)
+    #confirmar que se trata de message4
 
 
     rxBuffer, nRx = com.getData(bytesSeremLidos)
