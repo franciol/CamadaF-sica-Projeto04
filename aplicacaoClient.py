@@ -60,8 +60,14 @@ def main():
 
     # Ativa comunicacao
     com.enable()
+    com.sendData(None, 1)
+    SentMessage1 = time.time()
+
+    while time.time() < SentMessage1 + 5:
+        #A FAZER: receber message2
 
     #verificar que a comunicacao foi aberta
+    
     print("comunicacao aberta")
 
 
@@ -69,7 +75,7 @@ def main():
     # voce pode criar o seu carregando os dados de uma imagem. Tente descobrir
     #como fazer isso
     print ("gerando dados para transmissao :")
-
+    com.sendData(None, 3)
 
 
 
@@ -79,7 +85,7 @@ def main():
     # Transmite dado
     print("tentado transmitir .... {} bytes".format(txLen))
 
-    com.sendData(txBuffer)
+    com.sendData(txBuffer, 4)
 
 
     # Atualiza dados da transmissao
@@ -90,7 +96,9 @@ def main():
     print("-------------------------")
     print("Comunicacao encerrada")
     print("-------------------------")
+    com.sendData(None, 7)
     com.disable()
+
 
     #so roda o main quando for executado do terminal ... se for chamado dentro de outro modulo nao roda
 if __name__ == "__main__":

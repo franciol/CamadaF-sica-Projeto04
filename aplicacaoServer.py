@@ -54,6 +54,7 @@ def main():
 
     # Ativa comunicacao
     com.enable()
+    
 
     #verificar que a comunicacao foi aberta
     print("comunicacao aberta")

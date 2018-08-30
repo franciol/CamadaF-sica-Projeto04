@@ -51,10 +51,10 @@ class enlace(object):
     ################################
     # Application  interface       #
     ################################
-    def sendData(self, data):
+    def sendData(self, data, messageType):
         """ Send data over the enlace interface
         """
-        dataEncap = facadeEnlace.encapsulate(data)
+        dataEncap = facadeEnlace.encapsulate(data, messageType)
         self.tx.sendBuffer(dataEncap)
 
     def getData(self, size):
@@ -63,6 +63,6 @@ class enlace(object):
         """
         print('entrou na leitura e tentara ler ' + str(size) )
         data = self.rx.getNData(size)
-        resultData,txLen = facadeEnlace.readHeadNAll(bytearray(data))
+        resultData,txLen, messageType = facadeEnlace.readHeadNAll(bytearray(data))
 
-        return(resultData, len(resultData))
+        return(resultData, len(resultData), messageType)
