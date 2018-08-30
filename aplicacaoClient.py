@@ -19,6 +19,42 @@ def int_to_byte(values, length):
 
     return result
 
+def sistemaEnvio(payload, com):
+    com.enable()
+    print("porta COM aberta com sucesso")
+
+
+    #Variaveis
+    ouvindoresposta1 = True
+
+
+
+    while ouvindoresposta1:
+        #Tipo 1: Ver se tem alguem ouvindo
+        com.sendData(None,1)
+        SentMessage1 = time.time()
+        bytesSeremLidos = None
+        while time.time() < SentMessage1 + 5 or bytesSeremLidos != None:
+            bytesSeremLidos=com.rx.getBufferLen()
+        if bytesSeremLidos != None:
+            resultData, resultDataLen, messageType = com.getData(bytesSeremLidos)
+            if messageType == 2:
+                ouvindoresposta1 = False
+                print("comunicacao aberta")
+                break
+        print("Resposta do servidor não recebida, reenvio do mensagem de tipo 1")
+
+
+    print("Enviando mensagem para confirmar que ouviu")
+    com.sendData(None,3)
+
+    time.sleep(2)
+
+    #print("tentado transmitir .... {} bytes".format(txLen))
+    com.sendData(payload,4)
+
+
+
 
 print("comecou")
 
@@ -43,7 +79,6 @@ serialName = "COM3"                  # Windows(variacao de)
 
 
 
-print("porta COM aberta com sucesso")
 
 
 
@@ -59,42 +94,8 @@ def main():
     com = enlace(serialName)
 
     # Ativa comunicacao
-    label: comStart
-    com.enable()
-    com.sendData(None, 1)
-    SentMessage1 = time.time()
-
-    while time.time() < SentMessage1 + 5:
-        #A FAZER: receber message2
-        #SE RECEBIDO: goto comOpen
-
-    if time.time() > SentMessage1 + 5:
-        com.sendData(None, 8)
-        goto comStart 
-
-
-
+    sistemaEnvio(imgByteArr, com)
     #verificar que a comunicacao foi aberta
-    label: comOpen
-    print("comunicacao aberta")
-
-
-    # a seguir ha um exemplo de dados sendo carregado para transmissao
-    # voce pode criar o seu carregando os dados de uma imagem. Tente descobrir
-    #como fazer isso
-    print ("gerando dados para transmissao :")
-    com.sendData(None, 3)
-
-
-
-    txBuffer = imgByteArr
-    txLen = len(imgByteArr)
-
-    label: comSend
-    # Transmite dado
-    print("tentado transmitir .... {} bytes".format(txLen))
-
-    com.sendData(txBuffer, 4)
 
 
     # Atualiza dados da transmissao
@@ -104,7 +105,7 @@ def main():
 
     #A FAZER: listener de dados recebidos
     #SE RECEBEU 6, goto comStart
-    
+
     #SE RECEBEU 5, goto comEnd
 
     label: comEnd

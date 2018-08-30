@@ -85,8 +85,8 @@ class RX(object):
             lenGrow=len(self.buffer)
             time.sleep(1)
             print("Não está pronto")
-       
-            
+
+
         return(len(self.buffer))
 
     def getAllBuffer(self, len):

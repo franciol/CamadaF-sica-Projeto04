@@ -44,7 +44,7 @@ print("porta COM aberta com sucesso")
 
 def main():
 
-    
+
     com = enlace(serialName)
 
     # Ativa comunicacao
@@ -55,22 +55,27 @@ def main():
     print("comunicacao aberta")
 
 
-    
+
 
     # Faz a recepcao dos dados
 
     #A FAZER: listener de pacotes
     #SE RECEBEU 1,
     com.sendData(None, 2)
-    SentMessage2 = time.time()
     
+
+    SentMessage2 = time.time()
+
     while time.time() < SentMessage2 + 5:
+        resultData, resultDataLen, messageType = com.getData();
+        if messageType == 3:
+
         #A FAZER: receber message3
         #SE RECEBIDO: goto recebendo dados
 
     if time.time() > SentMessage2 + 5:
         com.sendData(None, 9)
-        goto comStart 
+        goto comStart
 
 
 
@@ -102,7 +107,7 @@ def main():
     img = Image.open(rxBuff)
     draw = ImageDraw.Draw(img)
     img.show()
-    img.save('/home/francisco/Documentos/Insper /Semestre4/Camada Física da Computação/Projeto02/SalvarArquivo/ImagemEnviadaFinal.jpg')
+    #img.save('/home/francisco/Documentos/Insper /Semestre4/Camada Física da Computação/Projeto02/SalvarArquivo/ImagemEnviadaFinal.jpg')
     #so roda o main quando for executado do terminal ... se for chamado dentro de outro modulo nao roda
 if __name__ == "__main__":
     main()
