@@ -56,7 +56,7 @@ def sistemaRecebimento(com):
         bytesSeremLidos, timeout = com.rx.getBufferLen(True)
         if timeout == True:
             print("ERRO TIPO II: NÃO RECEBEU MENSAGEM 3")
-        payload, lenPayload, messageType = com.getData(bytesSeremLidos)
+        payload, lenPayload, messageType, ack = com.getData(bytesSeremLidos)
 
         if messageType == 3:
             print("RECEBEU MENSAGEM 3")
@@ -71,6 +71,29 @@ def sistemaRecebimento(com):
         print("OUVINDO MENSAGEM 4")
         com.sendData(None,3)
         print("MANDOU MENSAGEM 3")
+    
+
+    
+        bytesSeremLidos, timeout = com.rx.getBufferLen(True)
+
+        payload, lenPayload, messageType, ack = com.getData(bytesSeremLidos)
+
+        if ack == True:
+            print("Recebeu tudo certo")
+            print("ENVIANDO MENSAGEM TIPO 5: ACKNOWLEDGE")
+            com.sendData(None,5)
+            ouvindoMensagem4 = False
+            break
+        
+        else:
+            print("ERRO NA TRANSMISSÃO – MANDE DE NOVO")
+            print("ENVIANDO MENSAGEM TIPO 6: NACKNOWLEDGE")
+            com.sendData(None,6)
+            ouvindoMensagem4 = False
+            continue
+
+    while ouvindoMensagem4:
+        
     
         bytesSeremLidos, timeout = com.rx.getBufferLen(False)
         
