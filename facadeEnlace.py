@@ -127,6 +127,7 @@ def readHeadNAll(receivedAll):
 
     sanityCheck = bytearray()
     stuffByteCount = 0
+    ack = False
 
     for i in range(22, len(receivedAll)):
         if receivedAll[i:i+1] == stuffByte:
@@ -146,16 +147,15 @@ def readHeadNAll(receivedAll):
     if len(sanityCheck) == txLen:
 
         print ("sanityCheck = okay")
-        com.sendData(None,5)
-        print ("MANDOU MENSAGEM TIPO 5 – ACKNOWLEDGE")
-        return sanityCheck, txLen, messageType
+        ack = True
+        
+        return sanityCheck, txLen, messageType, ack
 
     else:
         
         print("Ue")
-        com.sendData(None,6)
-        print ("MANDOU MENSAGEM TIPO 5 - NACKNOWLEDGE")
-        return None, None, messageType
+        
+        return None, None, messageType, ack
    
 
 
