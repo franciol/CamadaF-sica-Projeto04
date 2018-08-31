@@ -112,6 +112,7 @@ def sistemaRecebimento(com):
     print("Comunicacao encerrada")
     print("-------------------------")
     com.sendData(None,7)
+    print("MANDOU MENSAGEM TIPO 7")
     com.disable()
     rxBuff = io.BytesIO(payload)
     img = Image.open(rxBuff)
