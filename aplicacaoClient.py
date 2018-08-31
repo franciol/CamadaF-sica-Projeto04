@@ -26,7 +26,6 @@ def sistemaEnvio(payload, com):
 
     #Variaveis
     timerparaACKNACK = 20
-    foitimeout = False
     enviou01 = False
     chegouresposta2 = False
     enviouresposta3 = False
@@ -36,18 +35,19 @@ def sistemaEnvio(payload, com):
     temtimout = False
 
     com.sendData(None,1)
+    enviou01 = True
     esperaresposta2 = True
     temtimout = True
 
 
     while True:
-        bufferLen, foitimeout = com.rx.getBufferLen(temtimout)
+        bufferLen = com.rx.getBufferLen(temtimout)
         print("bufferLen: ",bufferLen)
         messaType = -1
-        if foitimeout:
+        if bufferLen == 0:
             print("Não entrou nada")
         else:
-            resultData, resultDataLen, messaType = com.getData(bytesSeremLidos)
+            resultData, resultDataLen, messaType = com.getData(bufferLen)
 
         if messaType == 1:
             print("Erro")
@@ -89,14 +89,14 @@ def sistemaEnvio(payload, com):
             break
 
 
-        elif enviou01 and not chegouresposta2 and bufferLen == None:
+        elif enviou01 and not chegouresposta2 and bufferLen == 0:
             print("Erro 1: Não recebimento da mensagem 2")
             time.sleep(1)
             print("\nReenviando mensagem 1")
             enviou01 = True
             com.sendData(None, 1)
 
-        elif bufferLen == None and envioupayload:
+        elif bufferLen == 0 and envioupayload:
             time.sleep(1)
             timerparaACKNACK-=1
             if timerparaACKNACK == 0:
@@ -132,7 +132,7 @@ import tkinter.filedialog as fdlg
 
 #serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
 #serialName = "/dev/cu.usbmodem1421" # Mac    (variacao de)
-serialName = "COM8"                  # Windows(variacao de)
+serialName = "COM3"                  # Windows(variacao de)
 
 
 
@@ -156,16 +156,9 @@ def main():
 
 
     # Atualiza dados da transmissao
-    txSize = com.tx.getStatus()
+    #txSize = com.tx.getStatus()
 
 
-
-    #A FAZER: listener de dados recebidos
-    #SE RECEBEU 6, goto comStart
-
-    #SE RECEBEU 5, goto comEnd
-
-    # Encerra comunicacao
 
 
     #so roda o main quando for executado do terminal ... se for chamado dentro de outro modulo nao roda
