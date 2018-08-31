@@ -24,6 +24,7 @@ def sistemaRecebimento(com):
     #Variaveis
     ouvindoMensagem1 = True
     ouvindoMensagem3 = True
+    ouvindoMensagem4 = True
     
     
 
@@ -56,6 +57,23 @@ def sistemaRecebimento(com):
         if timeout == True:
             print("ERRO TIPO II: NÃO RECEBEU MENSAGEM 3")
         payload, lenPayload, messageType = com.getData(bytesSeremLidos)
+
+        if messageType == 3:
+            print("RECEBEU MENSAGEM 3")
+            ouvindoMensagem3 = False
+            print("OUVINDO MENSAGEM 4")
+            break
+        
+        else:
+            continue
+
+    while ouvindoMensagem4:
+        print("OUVINDO MENSAGEM 4")
+        com.sendData(None,3)
+        print("MANDOU MENSAGEM 3")
+    
+        bytesSeremLidos, timeout = com.rx.getBufferLen(False)
+        
 
         if messageType == 3:
             print("RECEBEU MENSAGEM 3")
