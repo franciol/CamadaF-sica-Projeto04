@@ -146,23 +146,15 @@ def readHeadNAll(receivedAll):
     if len(sanityCheck) == txLen:
 
         print ("sanityCheck = okay")
-        
+        com.sendData(None,5)
         return sanityCheck, txLen, messageType
 
     else:
         
         print("Ue")
+        com.sendData(None,6)
         return None, None, messageType
-    '''
-    ATENÇÃO: TROCAR ELSE POR TRATAMENTO DE ERROS VIA PROTOCOLO MESSAGETYPE
-
-    '''
-
-    # else:
-    #     print ("\n\n ERRO  \n\n HOUVE FALHA NA TRANSMISSÃO. FECHANDO APLICAÇÃO… TENTE NOVAMENTE.")
-    #     quit()
-
-
+   
 
 
 def teste():
