@@ -91,7 +91,8 @@ class RX(object):
             if valorIni =0 :
                 return None
                 break
-            valorIni-=1
+            if len(self.buffer) == 0:
+                valorIni-=1
 
 
         return(len(self.buffer))
