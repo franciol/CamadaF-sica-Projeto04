@@ -75,6 +75,7 @@ class RX(object):
     def getBufferLen(self, temtimout):
         """ Return the total number of bytes in the reception buffer
         """
+        timeout = False
         lenGrow = -1
         print("len original:",len(self.buffer))
         valorIni = 0
@@ -88,14 +89,14 @@ class RX(object):
             print("notReady")
             lenGrow=len(self.buffer)
             time.sleep(1)
-            if valorIni =0 :
-                return None
+            if valorIni = 0 :
+                timeout = True
                 break
             if len(self.buffer) == 0:
                 valorIni-=1
 
 
-        return(len(self.buffer))
+        return(len(self.buffer), timeout)
 
 
     def getAllBuffer(self, len):

@@ -25,7 +25,6 @@ def sistemaRecebimento(com):
     ouvindoMensagem1 = True
     ouvindoMensagem3 = True
     ouvindoMensagem4 = True
-    ouvindoMensagem56 = True
     ouvindoMensagem7 = True
     ouvindoMensagem9 = True
 
@@ -33,7 +32,7 @@ def sistemaRecebimento(com):
 
     while ouvindoMensagem1:
         print("OUVINDO MENSAGEM 1")
-        bytesSeremLidos = com.rx.getBufferLen()
+        bytesSeremLidos = com.rx.getBufferLen(False)
 
         payload, lenPayload, messageType = com.getData(bytesSeremLidos)
         print("messageType ", messageType)
@@ -51,27 +50,27 @@ def sistemaRecebimento(com):
         print("OUVINDO MENSAGEM 3")
         com.sendData(None,2)
         print("MANDOU MENSAGEM 2")
-        SentMessage2 = time.time()
+    
 
-        while time.time() < SentMessage2 + 5 or bytesSeremLidos != None:
-            bytesSeremLidos = com.rx.getBufferLen()
-            payload, lenPayload, messageType = com.getData(bytesSeremLidos)
+    
+        bytesSeremLidos, timeout = com.rx.getBufferLen(True)
+        if timeout == True:
+            com.sendData(None,9)
+        payload, lenPayload, messageType = com.getData(bytesSeremLidos)
 
-            if messageType == 3:
-                print("RECEBEU MENSAGEM 3")
-                ouvindoMensagem3 = False
-                break
-            
-            else:
-                continue
-
-    bytesSeremLidos = com.rx.getBufferLen()
-    payload, lenPayload, messageType = com.getData(bytesSeremLidos);
+        if messageType == 3:
+            print("RECEBEU MENSAGEM 3")
+            ouvindoMensagem3 = False
+            break
+        
+        else:
+            continue
 
 
     print("-------------------------")
     print("Comunicacao encerrada")
     print("-------------------------")
+    com.sendData(None,7)
     com.disable()
     rxBuff = io.BytesIO(payload)
     img = Image.open(rxBuff)
