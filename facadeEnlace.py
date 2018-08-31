@@ -147,12 +147,14 @@ def readHeadNAll(receivedAll):
 
         print ("sanityCheck = okay")
         com.sendData(None,5)
+        print ("MANDOU MENSAGEM TIPO 5 – ACKNOWLEDGE")
         return sanityCheck, txLen, messageType
 
     else:
         
         print("Ue")
         com.sendData(None,6)
+        print ("MANDOU MENSAGEM TIPO 5 - NACKNOWLEDGE")
         return None, None, messageType
    
 
