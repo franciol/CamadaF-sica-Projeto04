@@ -81,14 +81,14 @@ class RX(object):
         if temtimout:
             valorIni = 5
         else:
-            valorIni = 100
+            valorIni = -1
 
 
         while len(self.buffer) != lenGrow or len(self.buffer) == 0:
             print("notReady")
             lenGrow=len(self.buffer)
             time.sleep(1)
-            if valorIni <=0 :
+            if valorIni =0 :
                 return None
                 break
             valorIni-=1
