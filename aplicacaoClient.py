@@ -41,7 +41,7 @@ def sistemaEnvio(payload, com):
 
 
     while True:
-        bufferLen = com.rx.getBufferLen(temtimout, foitimeout)
+        bufferLen, foitimeout = com.rx.getBufferLen(temtimout)
         print("bufferLen: ",bufferLen)
         messaType = -1
         if foitimeout:
