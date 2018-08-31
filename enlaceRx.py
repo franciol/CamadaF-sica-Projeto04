@@ -72,22 +72,30 @@ class RX(object):
         else:
             return(False)
 
-    def getBufferLen(self):
+    def getBufferLen(self, temtimout):
         """ Return the total number of bytes in the reception buffer
         """
         lenGrow = -1
         print("len original:",len(self.buffer))
-
+        valorIni = 0
+        if temtimout:
+            valorIni = 5
+        else:
+            valorIni = 100
 
 
         while len(self.buffer) != lenGrow or len(self.buffer) == 0:
             print("notReady")
             lenGrow=len(self.buffer)
             time.sleep(1)
-            print("Não está pronto")
+            if valorIni <=0 :
+                return None
+                break
+            valorIni-=1
 
 
         return(len(self.buffer))
+
 
     def getAllBuffer(self, len):
         """ Read ALL reception buffer and clears it

@@ -25,7 +25,11 @@ def sistemaEnvio(payload, com):
 
 
     #Variaveis
+    enviou01 = False
     ouvindoresposta1 = True
+    temtimout = False
+    while True:
+        bufferLen = com.rx.getBufferLen(temtimout)
 
 
 
@@ -37,7 +41,7 @@ def sistemaEnvio(payload, com):
         bytesSeremLidos = None
         while time.time() < SentMessage1 + 5:
             print("Entrou na leitura de Buffer para 2")
-            bytesSeremLidos=com.rx.getBufferLen()
+            bytesSeremLidos=com.rx.getBufferLen(True)
         if bytesSeremLidos != None:
             print("bytesseremlidos: ",bytesSeremLidos)
             resultData, resultDataLen, messageType = com.getData(bytesSeremLidos)
@@ -46,6 +50,8 @@ def sistemaEnvio(payload, com):
                 print("comunicacao aberta")
                 ouvindoresposta1 = False
                 break
+            else if messaType == 8 :
+                print("Não recebeu tipo ")
         print("Resposta do servidor não recebida, reenvio do mensagem de tipo 1")
 
 
@@ -118,7 +124,6 @@ def main():
     print("-------------------------")
     print("Comunicacao encerrada")
     print("-------------------------")
-    com.sendData(None, 7)
     com.disable()
 
 
