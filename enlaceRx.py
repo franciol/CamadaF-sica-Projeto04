@@ -129,7 +129,7 @@ class RX(object):
 
         #if self.getBufferLen() < size:
             #print("ERROS!!! TERIA DE LER %s E LEU APENAS %s", (size,temPraLer))
-        while(self.getBufferLen() < size):
+        while(self.getBufferLen(True) < size):
             time.sleep(0.05)
 #
         return(self.getBuffer(size))

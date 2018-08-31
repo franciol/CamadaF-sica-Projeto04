@@ -34,7 +34,7 @@ def sistemaRecebimento(com):
         print("OUVINDO MENSAGEM 1")
         bytesSeremLidos = com.rx.getBufferLen(False)
 
-        payload, lenPayload, messageType = com.getData(bytesSeremLidos)
+        payload, lenPayload, messageType, ack = com.getData(bytesSeremLidos)
         print("messageType ", messageType)
         
         if messageType == 1:
