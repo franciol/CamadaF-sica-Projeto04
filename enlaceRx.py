@@ -15,6 +15,8 @@ import facadeEnlace
 # Threads
 import threading
 
+
+
 # Class
 class RX(object):
     """ This class implements methods to handle the reception
@@ -89,7 +91,7 @@ class RX(object):
             print("notReady")
             lenGrow=len(self.buffer)
             time.sleep(1)
-            if valorIni = 0 :
+            if valorIni == 0 :
                 timeout = True
                 break
             if len(self.buffer) == 0:
