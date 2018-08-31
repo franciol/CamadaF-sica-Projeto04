@@ -47,11 +47,11 @@ def sistemaEnvio(payload, com):
         if bufferLen == 0:
             print("Não entrou nada")
         else:
-            resultData, resultDataLen, messaType = com.getData(bufferLen)
+            resultData, resultDataLen, messaType ,ack= com.getData(bufferLen)
 
         if messaType == 1:
             print("Erro")
-        elif messaType == 2 & enviou01:
+        elif messaType == 2 and enviou01:
             chegouresposta2 = True
             print("Servidor ouvindo corretamente")
             com.sendData(None, 3)
