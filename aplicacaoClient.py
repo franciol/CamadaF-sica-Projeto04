@@ -26,6 +26,7 @@ def sistemaEnvio(payload, com):
 
     #Variaveis
     timerparaACKNACK = 20
+    foitimeout = False
     enviou01 = False
     chegouresposta2 = False
     enviouresposta3 = False
