@@ -34,7 +34,7 @@ def sistemaRecebimento(com):
         print("OUVINDO MENSAGEM 1")
         bytesSeremLidos = com.rx.getBufferLen(False)
 
-        payload, lenPayload, messageType = com.getData(bytesSeremLidos)
+        payload, lenPayload, messageType, ack = com.getData(bytesSeremLidos)
         print("messageType ", messageType)
         
         if messageType == 1:
@@ -112,6 +112,7 @@ def sistemaRecebimento(com):
     print("Comunicacao encerrada")
     print("-------------------------")
     com.sendData(None,7)
+    print("MANDOU MENSAGEM TIPO 7")
     com.disable()
     rxBuff = io.BytesIO(payload)
     img = Image.open(rxBuff)
