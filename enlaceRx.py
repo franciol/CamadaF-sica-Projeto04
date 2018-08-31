@@ -98,7 +98,7 @@ class RX(object):
                 valorIni-=1
 
 
-        return(len(self.buffer), timeout)
+        return(len(self.buffer))
 
 
     def getAllBuffer(self, len):
