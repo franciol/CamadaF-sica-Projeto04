@@ -37,6 +37,7 @@ def sistemaRecebimento(com):
 
         payload, lenPayload, messageType = com.getData(bytesSeremLidos)
         print("messageType ", messageType)
+        
         if messageType == 1:
             print("RECEBEU MENSAGEM 1")
             ouvindoMensagem1 = False
