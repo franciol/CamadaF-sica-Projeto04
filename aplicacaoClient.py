@@ -40,10 +40,10 @@ def sistemaEnvio(payload, com):
 
 
     while True:
-        bufferLen = com.rx.getBufferLen(temtimout)
+        bufferLen = com.rx.getBufferLen(temtimout, foitimeout)
         print("bufferLen: ",bufferLen)
         messaType = -1
-        if bufferLen == None:
+        if foitimeout:
             print("Não entrou nada")
         else:
             resultData, resultDataLen, messaType = com.getData(bytesSeremLidos)
