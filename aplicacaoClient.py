@@ -25,44 +25,89 @@ def sistemaEnvio(payload, com):
 
 
     #Variaveis
+    timerparaACKNACK = 20
     enviou01 = False
-    ouvindoresposta1 = True
+    chegouresposta2 = False
+    enviouresposta3 = False
+    envioupayload = False
+    chegoupayloadnoserver = False
+    chegoupayloadcerto = False
     temtimout = False
+
+    com.sendData(None,1)
+    esperaresposta2 = True
+    temtimout = True
+
+
     while True:
         bufferLen = com.rx.getBufferLen(temtimout)
+        print("bufferLen: ",bufferLen)
+        messaType = -1
+        if bufferLen == None:
+            print("Não entrou nada")
+        else:
+            resultData, resultDataLen, messaType = com.getData(bytesSeremLidos)
+
+        if messaType == 1:
+            print("Erro")
+        elif messaType == 2 & enviou01:
+            chegouresposta2 = True
+            print("Servidor ouvindo corretamente")
+            com.sendData(None, 3)
+            enviouresposta3 = True
+            print("\nAvisando o server que estou ouvindo")
+            time.sleep(5)
+            com.sendData(payload,4)
+            print("\nEnviando payload")
+            envioupayload = True
+            temtimout = False
+
+
+        elif messaType == 5:
+            print("Servidor recebeu corretamente os dados do Payload")
+            chegoupayloadnoserver = True
+            chegoupayloadcerto = True
+
+
+        elif messaType == 6:
+            chegoupayloadnoserver = True
+            chegoupayloadcerto = False
+            print("Servidor recebeu os dados mas pacote estava corrompido")
+            #Reenviando payload
+            print("\nReenviando dados")
+            com.sendData(payload,4)
+            timerparaACKNACK = 20
+
+        elif messaType == 7:
+            com.disable()
+            print("Fechando Comunicação\n\n\n")
+            time.sleep(1)
+            print("-------------------------")
+            print("Comunicacao encerrada")
+            print("-------------------------")
+            break
+
+
+        elif enviou01 and not chegouresposta2 and bufferLen == None:
+            print("Erro 1: Não recebimento da mensagem 2")
+            time.sleep(1)
+            print("\nReenviando mensagem 1")
+            enviou01 = True
+            com.sendData(None, 1)
+
+        elif bufferLen == None and envioupayload:
+            time.sleep(1)
+            timerparaACKNACK-=1
+            if timerparaACKNACK == 0:
+                print("Erro 3: Não recebimento de mensagem ACK/NACK")
 
 
 
-    while ouvindoresposta1:
-        #Tipo 1: Ver se tem alguem ouvindo
-        com.sendData(None,1)
-        print("Mensagem 1 enviada")
-        SentMessage1 = time.time()
-        bytesSeremLidos = None
-        while time.time() < SentMessage1 + 5:
-            print("Entrou na leitura de Buffer para 2")
-            bytesSeremLidos=com.rx.getBufferLen(True)
-        if bytesSeremLidos != None:
-            print("bytesseremlidos: ",bytesSeremLidos)
-            resultData, resultDataLen, messageType = com.getData(bytesSeremLidos)
-            if messageType == 2:
-                print("mensagem tipo 2 Chegou\n")
-                print("comunicacao aberta")
-                ouvindoresposta1 = False
-                break
-            else if messaType == 8 :
-                print("Não recebeu tipo ")
-        print("Resposta do servidor não recebida, reenvio do mensagem de tipo 1")
 
 
-    print("Enviando mensagem para confirmar que ouviu")
-    com.sendData(None,3)
 
-    time.sleep(10)
 
-    #print("tentado transmitir .... {} bytes".format(txLen))
-    print("Enviando Informação")
-    com.sendData(payload,4)
+
 
 
 
@@ -86,7 +131,7 @@ import tkinter.filedialog as fdlg
 
 #serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
 #serialName = "/dev/cu.usbmodem1421" # Mac    (variacao de)
-serialName = "COM4"                  # Windows(variacao de)
+serialName = "COM3"                  # Windows(variacao de)
 
 
 
@@ -119,12 +164,7 @@ def main():
 
     #SE RECEBEU 5, goto comEnd
 
-    label: comEnd
     # Encerra comunicacao
-    print("-------------------------")
-    print("Comunicacao encerrada")
-    print("-------------------------")
-    com.disable()
 
 
     #so roda o main quando for executado do terminal ... se for chamado dentro de outro modulo nao roda
