@@ -139,8 +139,9 @@ def readHeadNAll(receivedAll):
 
         else:
             sanityCheck += receivedAll[i:i+1]
-            print("\n yep")
-            print(sanityCheck)
+            #print("\n yep")
+            #print(sanityCheck)
+            print("VERIFICANDO PACOTE RECEBIDO")
 
 
     print('SanityCheck ', sanityCheck)

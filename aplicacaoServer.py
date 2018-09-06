@@ -107,7 +107,7 @@ def sistemaRecebimento(com):
         else:
             continue
 
-    time.sleep(2)
+    time.sleep(5)
     
     print("-------------------------")
     print("Comunicacao encerrada")
@@ -115,6 +115,7 @@ def sistemaRecebimento(com):
     
     com.sendData(None,7)
     print("MANDOU MENSAGEM TIPO 7")
+    time.sleep(2)
     com.disable()
     rxBuff = io.BytesIO(payload)
     img = Image.open(rxBuff)
@@ -166,7 +167,7 @@ import io,os
 # se estiver usando windows, o gerenciador de dispositivos informa a porta
 
 #serialName = "/dev/ttyACM0"           # Ubuntu (variacao de)
-serialName = "/dev/tty.usbmodem1411" # Mac    (variacao de)
+serialName = "/dev/cu.usbmodem1421" # Mac    (variacao de)
 #serialName = "COM4"                  # Windows(variacao de)
 
 
